@@ -1,7 +1,6 @@
 <template>
     <div class="phone_main">
-        <v-row>
-            <v-col cols="3" class="p_relative">
+            <v-col class="p_relative">
                 <div class="phone_main__block full_height elevation-1">
                     <v-list dense>
                         <v-overlay
@@ -36,10 +35,6 @@
                     </v-list>
                 </div>
             </v-col>
-            <v-col>
-                <router-view class="view"></router-view>
-            </v-col>
-        </v-row>
     </div>
 </template>
 

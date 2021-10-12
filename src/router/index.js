@@ -13,7 +13,12 @@ const routes = [
         path: '/birthday',
         name: 'birthday',
         component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/BirthdayPage.vue')
-      }
+      },
+      {
+        path: '/deps',
+        name: 'deps',
+        component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/DepsPage.vue')
+      },
     ]
   },
 ]

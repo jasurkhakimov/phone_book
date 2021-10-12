@@ -96,10 +96,9 @@
             </template>
         </NavbarPhone>
         <div class="main_user_container p-24">
-            <!-- <transition name="fade" mode="out-in">
+            <transition name="fade" mode="out-in">
                 <router-view></router-view>
-            </transition> -->
-            <main-page-layout></main-page-layout>
+            </transition>
             <!-- <router-view></router-view> -->
         </div>
     </div>
@@ -107,14 +106,12 @@
 
 <script>
 import NavbarPhone from "../includes/NavbarPhone.vue";
-import MainPageLayout from "./MainPageLayout.vue";
 import axios from "axios";
 
 export default {
     name: "PhoneBookLayout",
     components: {
         NavbarPhone,
-        MainPageLayout,
     },
     data: () => ({
         show: true,

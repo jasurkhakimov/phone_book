@@ -6,7 +6,7 @@
             </router-link>
         </div>
         <div class="links">
-            <router-link class="link" :to="{ name: 'birthday' }">
+            <router-link class="link" :to="{ name: 'deps' }">
                 Телефонный справочник
             </router-link>
         </div>

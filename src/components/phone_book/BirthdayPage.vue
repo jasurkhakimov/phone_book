@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="phone_main">
         <div>
             <div class="phone_main__header">
                 Отмечают день рождение:
@@ -10,7 +10,7 @@
                 />
             </div>
             <v-row>
-                <v-col cols="4" v-for="(index, item) in 3" :key="index">
+                <v-col cols="3" v-for="(index, item) in 4" :key="index">
                     <div class="phone_card elevation-1">
                         <img
                             src="../../assets/bg-login-img2.jpg"
@@ -41,7 +41,7 @@
                 />
             </div>
             <v-row>
-                <v-col cols="4" v-for="(index, item) in 3" :key="index">
+                <v-col cols="3" v-for="(index, item) in 4" :key="index">
                     <div class="phone_card elevation-1">
                         <img
                             src="../../assets/bg-login-img2.jpg"
