@@ -5,18 +5,20 @@
                     <v-list dense>
                         <v-overlay
                             :absolute="true"
-                            :value="entities.length > 0 ? false : true"
+                            :value="ents.length > 0 ? false : true"
                         >
                             <v-progress-circular
                                 indeterminate
                                 size="32"
                             ></v-progress-circular>
                         </v-overlay>
+
                         <v-list-item-group>
                             <v-list-group
                                 no-action
                                 v-for="(branch, index) in branches"
                                 :key="index"
+                                @click="br(branch.MFO)"
                             >
                                 <template v-slot:activator>
                                     <v-list-item-content
@@ -25,11 +27,16 @@
                                         <v-list-item-title
                                             class="primary--text"
                                         >
-                                            {{ branch.NAME }} - {{ branch.MFO }}
+                                            ({{ branch.MFO }}) {{ branch.NAME }}
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </template>
-                                
+                                <v-list-item
+                                    v-for="(ent, index) in branchEnts"
+                                    :key="index"
+                                >
+                                    <v-list-item-title>{{ ent.name }}</v-list-item-title>
+                                </v-list-item>
                             </v-list-group>
                         </v-list-item-group>
                     </v-list>
@@ -45,16 +52,20 @@ export default {
     name: "MainPage",
     components: {},
     data: () => ({
-        show: true,
         branches: [],
-        regions: [],
-        entities: [],
+        ents:[],
+        branchEnts:[]
     }),
     created: function () {
         this.getBranches();
-        this.getEntities();
+        this.getEnts();
     },
     methods: {
+        br(branch) {
+            this.branchEnts = this.ents.filter(item=>{
+                return item.mfo.includes(branch) 
+            })
+        },
         getBranches() {
             axios.get("/branches").then((response) => {
                 this.branches = response.data.filter((item) => {
@@ -64,23 +75,16 @@ export default {
                 });
             });
         },
-        getEntities() {
-            axios
-                .get("/phone_structure", {
-                    params: {},
-                })
-                .then((response) => {
-                    // console.log(typeof JSON.parse(response.data));
-                    this.entities = response.data;
-                    // this.entities = response.data.filter((item) => {
-                        
-                    //     if (item.PARENTCODE == 0) {
-                    //         console.log(item.PARENTCODE);
-                    //     return item;
-                    //     }
-                    // });
+        getEnts(){
+            axios.get('/ents').then(response => {
+                this.ents = response.data.map(item => {
+                    return {name:item.NAME,mfo:this.getUnique(item.PER)}
                 });
+            })
         },
+        getUnique(arr){
+            return [...new Set(arr.map(item => item.BRANCH))];
+        }
     },
     computed: {},
 };

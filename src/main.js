@@ -8,7 +8,9 @@ import axios from 'axios';
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'http://10.10.12.67:5000';
+// axios.defaults.baseURL = 'http://10.10.12.67:5000';
+
+axios.defaults.baseURL = 'http://192.168.1.3:5001';
 
 // axios.interceptors.request.use(
 //   config => {
