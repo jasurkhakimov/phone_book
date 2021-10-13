@@ -78,7 +78,7 @@ export default {
         getEnts(){
             axios.get('/ents').then(response => {
                 this.ents = response.data.map(item => {
-                    return {name:item.NAME,mfo:this.getUnique(item.PER)}
+                    return {_id:item._id,name:item.NAME,mfo:this.getUnique(item.PER)}
                 });
             })
         },
