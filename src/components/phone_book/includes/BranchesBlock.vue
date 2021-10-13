@@ -1,6 +1,6 @@
 <template>
     <div class="phone_main">
-            <v-col class="p_relative">
+            <div class="p_relative">
                 <div class="phone_main__block full_height elevation-1">
                     <v-list dense>
                         <v-overlay
@@ -34,7 +34,7 @@
                         </v-list-item-group>
                     </v-list>
                 </div>
-            </v-col>
+            </div>
     </div>
 </template>
 

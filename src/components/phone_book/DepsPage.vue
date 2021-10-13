@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col cols="3">
-            <main-page-layout></main-page-layout>
+            <branches-block></branches-block>
         </v-col>
         <v-col>
             <div v-if="!data.length">
@@ -111,12 +111,12 @@
 <script>
 import axios from "axios";
 import { Base64 } from "js-base64";
-import MainPageLayout from "./layout/MainPageLayout.vue";
+import BranchesBlock from "./includes/BranchesBlock.vue";
 
 export default {
     name: "DepPage",
     components: {
-        MainPageLayout,
+        BranchesBlock,
     },
     data: () => ({
         show: true,
@@ -187,9 +187,10 @@ export default {
             });
         },
         getDepsId() {
-            this.deps_id = this.$store.getters
-                .findChild(this.entities, this.$route.params.id)
-                .flat(5);
+            this.deps_id = this.findChild(
+                this.entities,
+                this.$route.params.id
+            ).flat(5);
 
             this.deps_id.unshift(this.$route.params.id);
 
@@ -199,6 +200,15 @@ export default {
         },
         scrollToTop() {
             window.scrollTo(0, 0);
+        },
+        findChild: (items, ID = null, link = "PARENTCODE") => {
+            let result = items.filter((item) => {
+                return item[link] === ID;
+            });
+            result = result.map((item) => {
+                return [item.ID, this.findChild(items, item.ID)];
+            });
+            return result;
         },
     },
     computed: {},
