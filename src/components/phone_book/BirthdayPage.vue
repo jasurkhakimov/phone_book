@@ -10,17 +10,29 @@
                 />
             </div>
             <v-row>
-                <v-col cols="3" v-for="(index, item) in 4" :key="index">
+                <v-col cols="3" v-for="(item, index) in today" :key="index">
                     <div class="phone_card elevation-1">
                         <img
                             src="../../assets/bg-login-img2.jpg"
-                            :alt="item"
+                            :alt="item.FIRST_NAME"
                             class="phone_card__img"
                         />
                         <div class="phone_card__info">
-                            <div class="info_name">Big Russian Boss</div>
-                            <div class="info_dep">Department of bosses</div>
-                            <div class="info_post">Boss</div>
+                            <div class="info_name">
+                                {{
+                                    item.FAMILY +
+                                    " " +
+                                    item.FIRST_NAME +
+                                    " " +
+                                    item.PATRONYMIC
+                                }}
+                            </div>
+                            <div class="info_dep">
+                                {{ getEntsName(item.DEPARTMENT_CODE) }}
+                            </div>
+                            <div class="info_post">
+                                {{ getPostName(item.POST_CODE) }}
+                            </div>
                             <div class="info_phone">
                                 Тел.:
                                 <span class="info_phone__inner">13-10</span> /
@@ -41,17 +53,29 @@
                 />
             </div>
             <v-row>
-                <v-col cols="3" v-for="(index, item) in 4" :key="index">
+                <v-col cols="3" v-for="(item, index) in tomorrow" :key="index">
                     <div class="phone_card elevation-1">
                         <img
                             src="../../assets/bg-login-img2.jpg"
-                            :alt="item"
+                            :alt="item.FIRST_NAME"
                             class="phone_card__img"
                         />
                         <div class="phone_card__info">
-                            <div class="info_name">Big Russian Boss</div>
-                            <div class="info_dep">Department of bosses</div>
-                            <div class="info_post">Boss</div>
+                            <div class="info_name">
+                                {{
+                                    item.FAMILY +
+                                    " " +
+                                    item.FIRST_NAME +
+                                    " " +
+                                    item.PATRONYMIC
+                                }}
+                            </div>
+                            <div class="info_dep">
+                                {{ getEntsName(item.DEPARTMENT_CODE) }}
+                            </div>
+                            <div class="info_post">
+                                {{ getPostName(item.POST_CODE) }}
+                            </div>
                             <div class="info_phone">
                                 Тел.:
                                 <span class="info_phone__inner">13-10</span> /
@@ -76,11 +100,14 @@ export default {
         branches: [],
         regions: [],
         entities: [],
+        today: [],
+        tomorrow: [],
+        posts: [],
     }),
     created: function () {
-        this.getBranches();
-        this.getEntities();
-        // console.log(this.entities);
+        this.getPosts();
+        this.getEnts();
+        this.getBirthdays();
     },
     methods: {
         getBranches() {
@@ -92,18 +119,37 @@ export default {
                 });
             });
         },
-        getEntities() {
-            // axios
-            //     .get("/phone_structure")
-            //     .then((response) => {
-            //         console.log("here",response.data);
-            //         // this.entities = response.data.filter((item) => {
-            //         //     if (item.PARENTCODE == null) {
-            //         //         return item;
-            //         //     }
-            //         // });
-            //         // console.log(this.entities);
-            //     });
+        getBirthdays() {
+            axios.get("/birthday").then((response) => {
+                if (response.status === 200) {
+                    this.today = response.data.today;
+                    this.tomorrow = response.data.tomorrow;
+                }
+            });
+        },
+        getPosts() {
+            axios.get("/posts").then((response) => {
+                this.posts = response.data;
+            });
+        },
+        getEnts() {
+            axios.get("/entities-full").then((response) => {
+                this.entities = response.data;
+                console.log(this.entities);
+            });
+        },
+        getPostName(id) {
+            return this.posts.length > 0 && id
+                ? this.posts.filter((item) => item.ID == id)[0]["NAME"]
+                : "";
+        },
+        getEntsName(id) {
+            if (this.entities.length > 0 && id) {
+                let item = this.entities.filter((item) => item.ID == id);
+                console.log(item, id);
+                return item.length ? item[0]["NAME"] : "";
+            }
+            return "";
         },
     },
     computed: {},
