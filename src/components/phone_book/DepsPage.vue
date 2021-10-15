@@ -1,30 +1,25 @@
 <template>
     <v-row>
         <v-col cols="3">
-            <branches-block></branches-block>
+            <branches-block
+                class="p_fixed"
+                @getNestedEntities="getNestedEntities"
+            ></branches-block>
         </v-col>
-        <v-col>
-            <div v-if="!data.length">
-                <v-btn
-                    color="primary"
-                    class="white--text"
-                    :to="{
-                        name: 'phone-birthday',
-                    }"
-                >
-                    Обновить
-                    <v-icon small class="ml-2"> mdi-reload </v-icon>
-                </v-btn>
-            </div>
-            <div v-else>
-                <div v-for="(dep, index) in data" :key="index">
+        <v-col class="phone_book_content">
+            <v-overlay :value="overlay">
+                <v-progress-circular
+                    indeterminate
+                    size="64"
+                ></v-progress-circular>
+            </v-overlay>
+            <div>
+                <div v-for="(dep, index) in data" :key="index" v-show="getEmpCount(dep)">
                     <div class="phone_main__header">
-                        {{ dep.NAME }} (кол-во сотрудников - &nbsp;
+                        {{ dep.NAME }} (кол-во сотрудников -
                         <span class="primary--text ml-1">
                             {{
-                                employees.filter(
-                                    (item) => item.DEPARTMENT_CODE == dep.ID
-                                ).length
+                                getEmpCount(dep)
                             }} </span
                         >)
                     </div>
@@ -43,14 +38,14 @@
                             <v-col class="cs_header__heading"> Статус </v-col>
                         </v-row>
                     </div>
-                    <router-link
+                    <div
                         v-for="(emp, index) in employees.filter(
                             (item) => item.DEPARTMENT_CODE == dep.ID
                         )"
                         :key="index"
-                        class="cs_row_card"
-                        :to="{ name: 'phone-emp', params: { id: emp._id } }"
+                        class="cs_row_card elevation-1"
                     >
+                        <!-- :to="{ name: 'phone-emp', params: { id: emp._id } }" -->
                         <v-row no-gutters class="ma-0">
                             <v-col class="cs_row_card__item">
                                 <img
@@ -78,16 +73,22 @@
                                 cols="2"
                                 >13-27</v-col
                             >
-                            <v-col class="cs_row_card__item">
+                            <v-col class="cs_row_card__item text-center">
                                 <span
                                     class="success--text"
                                     v-if="emp.STATUS_CODE == 2"
                                 >
-                                    Активный
+                                    Работает
+                                </span>
+                                <span
+                                    class="orange--text"
+                                    v-if="emp.STATUS_CODE == 5"
+                                >
+                                    Декретный отпуск
                                 </span>
                             </v-col>
                         </v-row>
-                    </router-link>
+                    </div>
                     <div
                         v-if="
                             employees.filter(
@@ -110,7 +111,6 @@
 
 <script>
 import axios from "axios";
-import { Base64 } from "js-base64";
 import BranchesBlock from "./includes/BranchesBlock.vue";
 
 export default {
@@ -119,71 +119,84 @@ export default {
         BranchesBlock,
     },
     data: () => ({
+        overlay: false,
         show: true,
         branches: [],
         regions: [],
         entities: [],
         dep: {},
-        employees: [],
+        employees: [
+            {
+                _id: "id",
+                ID: 1,
+                FIRST_NAME: "Test",
+                FAMILY: "Test",
+                PATRONYMIC: "Test",
+                STATUS_CODE: 1,
+                POST_CODE: 1,
+                DEPARTMENT_CODE: 819,
+            },
+        ],
         data: [],
         deps_id: [],
         posts: [],
     }),
     created: function () {
-        this.getData();
+        this.getPosts();
+        this.getNestedEntities({ ID: 1, NAME: ".", mfo: ["00444"] });
     },
     watch: {
         $route(from, to) {
             if (to !== from) {
-                this.getData();
                 this.scrollToTop();
             }
         },
     },
     methods: {
+        getEmpCount(dep) {
+            return this.employees.filter((item) => item.DEPARTMENT_CODE == dep.ID)
+                .length;
+        },
+        getNestedEntities(item) {
+            this.overlay = true;
+            axios
+                .get("/nestedEntities", {
+                    params: {
+                        ID: item.ID,
+                    },
+                })
+                .then((response) => {
+                    this.data = [item, ...response.data.flat(5)];
+                    this.entitiesIDs = this.data.map((item) => item.ID);
+
+                    axios
+                        .get("/personal", {
+                            params: {
+                                DEPARTMENT_CODE: {
+                                    $in: this.entitiesIDs,
+                                },
+                                BRANCH: item.BRANCH,
+                            },
+                        })
+                        .then((response) => {
+                            this.employees = response.data;
+                        });
+
+                    console.log(this.data);
+                })
+                .finally(() => {
+                    this.scrollToTop();
+                    this.overlay = false;
+                });
+        },
         getPostName(id) {
             return this.posts.length > 0 && id
                 ? this.posts.filter((item) => item.ID == id)[0]["NAME"]
                 : "";
         },
-        getData() {
-            console.log("I am here.......");
-            axios.get("/entities").then((response) => {
-                console.log("I am here....... entities");
-                this.entities = response.data;
-                axios.get("/posts").then((response) => {
-                    console.log("I am here....... posts");
-                    this.posts = response.data;
-
-                    this.getDepsId();
-
-                    let data = {
-                        ID: 1,
-                        FIRST_NAME: 1,
-                        FAMILY: 1,
-                        PATRONYMIC: 1,
-                        STATUS_CODE: 1,
-                        POST_CODE: 1,
-                        DEPARTMENT_CODE: 1,
-                    };
-
-                    let params = Base64.encode(
-                        JSON.stringify({
-                            query: {
-                                DEPARTMENT_CODE: { $in: this.deps_id },
-                                STATUS_CODE: { $ne: 4 },
-                                BRANCH: this.$route.params.mfo,
-                            },
-                            body: data,
-                        })
-                    );
-
-                    axios
-                        .get("/personal", { params: { data: params } })
-                        .then((response) => {
-                            this.employees = response.data;
-                        });
-                });
+        getPosts() {
+            axios.get("/posts").then((response) => {
+                this.posts = response.data;
             });
         },
         getDepsId() {
@@ -216,6 +229,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.p_fixed {
+    position: sticky;
+}
+
+.phone_book_content {
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
 .cs_header {
     padding: 0 16px;
     &__heading {
@@ -234,6 +256,10 @@ export default {
     color: inherit !important;
 }
 
+.pos-relative {
+    position: relative;
+}
+
 .cs_row_card {
     display: block;
     margin-bottom: 8px;
@@ -245,15 +271,20 @@ export default {
         background-color: #e8f5e9;
     }
 
-    -webkit-box-shadow: 0px 15px 30px -5px rgba(0, 0, 0, 0.11);
-    box-shadow: 0px 15px 30px -5px rgba(0, 0, 0, 0.11);
+    // -webkit-box-shadow: 0px 15px 30px -5px rgba(0, 0, 0, 0.11);
+    // box-shadow: 0px 15px 30px -5px rgba(0, 0, 0, 0.11);
     border-radius: 5px;
     &__item {
         display: flex;
         justify-content: center;
         align-items: center;
         & .item_img {
-            height: 55px;
+            height: 44px;
+            transition: 0.2s;
+
+            &:hover {
+                transform: scale(2.5);
+            }
         }
     }
 }

@@ -4,13 +4,14 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import './assets/styles/main.scss';
+import './assets/styles/materialdesignicons.min.css';
 import axios from 'axios';
 
 Vue.config.productionTip = false
 
 // axios.defaults.baseURL = 'http://10.10.12.67:5000';
 
-axios.defaults.baseURL = 'http://192.168.1.3:5001';
+axios.defaults.baseURL = 'http://localhost:5001';
 
 // axios.interceptors.request.use(
 //   config => {

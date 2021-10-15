@@ -146,11 +146,22 @@ export default {
 </script>
 
 <style lang="scss">
-.wrapper_user {
+html {
+    overflow: scroll;
+    overflow-x: hidden;
 }
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
 .main_user_container {
     // padding-top: 20px;
-    min-height: 100vh;
+    min-height: 90vh;
     background-color: #f5f5f5;
     & .fade-enter-active,
     .fade-leave-active {
@@ -186,15 +197,17 @@ export default {
             background-color: #fff;
             padding: 0;
             border-radius: 6px;
+            max-height: 90vh;
+            overflow: auto;
             // border: 0.5px solid #dadada;
             // margin: 12px;
         }
 
         &__header {
             font-weight: 500;
-            font-size: 24px;
+            font-size: 18px;
             line-height: 28px;
-            margin: 24px;
+            margin: 16px;
             color: #686868;
             display: flex;
             align-items: center;
