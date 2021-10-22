@@ -49,7 +49,7 @@
                         <v-row no-gutters class="ma-0">
                             <v-col class="cs_row_card__item">
                                 <img
-                                    src="../../assets/bg-login-img2.jpg"
+                                    src="http://10.10.12.50/ubsp_test/avatar.php?uid=714"
                                     alt=""
                                     class="item_img"
                                 />
@@ -71,7 +71,7 @@
                             <v-col
                                 class="cs_row_card__item primary--text"
                                 cols="2"
-                                >13-27</v-col
+                                >{{emp.EXT}}</v-col
                             >
                             <v-col class="cs_row_card__item text-center">
                                 <span
@@ -180,6 +180,7 @@ export default {
                         })
                         .then((response) => {
                             this.employees = response.data;
+                            console.log(this.employees);
                         });
 
                     console.log(this.data);

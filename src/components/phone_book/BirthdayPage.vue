@@ -35,8 +35,9 @@
                             </div>
                             <div class="info_phone">
                                 Тел.:
-                                <span class="info_phone__inner">13-10</span> /
-                                (71) 148-00-00
+                                <span class="info_phone__inner">{{
+                                    item.EXT
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -78,8 +79,9 @@
                             </div>
                             <div class="info_phone">
                                 Тел.:
-                                <span class="info_phone__inner">13-10</span> /
-                                (71) 148-00-00
+                                <span class="info_phone__inner">{{
+                                    item.EXT
+                                }}</span>
                             </div>
                         </div>
                     </div>

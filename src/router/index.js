@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: {name: 'main'},
+    redirect: {name: 'birthday'},
     component: () => import('../components/phone_book/layout/PhoneBookLayout.vue'),
     children: [
       {
@@ -20,11 +20,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/DepsPage.vue')
       },
     ],
-  },
-  {
-    path: '/main',
-    name: 'main',
-    component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/MainPage.vue')
   },
 ]
 
