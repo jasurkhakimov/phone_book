@@ -49,7 +49,7 @@
                         <v-row no-gutters class="ma-0">
                             <v-col class="cs_row_card__item">
                                 <img
-                                    src="http://10.10.12.50/ubsp_test/avatar.php?uid=714"
+                                    :src="getSrc(emp.PIC)"
                                     alt=""
                                     class="item_img"
                                 />
@@ -153,6 +153,9 @@ export default {
         },
     },
     methods: {
+        getSrc(id){
+            return "http://10.10.12.50/ubsp_test/avatar.php?uid=" + id
+        },
         getEmpCount(dep) {
             return this.employees.filter((item) => item.DEPARTMENT_CODE == dep.ID)
                 .length;

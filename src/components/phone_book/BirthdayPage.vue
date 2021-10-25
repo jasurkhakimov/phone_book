@@ -13,7 +13,7 @@
                 <v-col cols="3" v-for="(item, index) in today" :key="index">
                     <div class="phone_card elevation-1">
                         <img
-                            src="../../assets/bg-login-img2.jpg"
+                            :src="getSrc(item.PIC)"
                             :alt="item.FIRST_NAME"
                             class="phone_card__img"
                         />
@@ -57,7 +57,7 @@
                 <v-col cols="3" v-for="(item, index) in tomorrow" :key="index">
                     <div class="phone_card elevation-1">
                         <img
-                            src="../../assets/bg-login-img2.jpg"
+                            :src="getSrc(item.PIC)"
                             :alt="item.FIRST_NAME"
                             class="phone_card__img"
                         />
@@ -112,6 +112,9 @@ export default {
         this.getBirthdays();
     },
     methods: {
+        getSrc(id){
+            return "http://10.10.12.50/ubsp_test/avatar.php?uid=" + id
+        },
         getBranches() {
             axios.get("/branches").then((response) => {
                 this.branches = response.data.filter((item) => {
@@ -124,6 +127,7 @@ export default {
         getBirthdays() {
             axios.get("/birthday").then((response) => {
                 if (response.status === 200) {
+                    console.log(response.data);
                     this.today = response.data.today;
                     this.tomorrow = response.data.tomorrow;
                 }

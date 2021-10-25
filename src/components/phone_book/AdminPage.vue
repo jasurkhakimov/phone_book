@@ -42,7 +42,7 @@
             <v-row no-gutters class="ma-0">
               <v-col class="cs_row_card__item">
                 <img
-                  src="http://10.10.12.50/ubsp_test/avatar.php?uid=714"
+                  :src="getSrc(emp.PIC)"
                   alt=""
                   class="item_img"
                 />
@@ -162,6 +162,9 @@ export default {
     },
   },
   methods: {
+    getSrc(id) {
+      return "http://10.10.12.50/ubsp_test/avatar.php?uid=" + id;
+    },
     editDialog(emp) {
       if (this.edit == true) {
         this.newExt.ext = emp.EXT;
@@ -170,20 +173,18 @@ export default {
       }
     },
     updateExt() {
-      axios
-        .post("/editExt", this.newExt)
-        .then((response) => {
-            if(response.status == 200){
-                this.employees.forEach(emp => {
-                    if(emp._id == this.newExt._id) {
-                        emp.EXT = this.newExt.ext;
-                        this.$forceUpdate();
-                        this.newExt = {}
-                        this.dialog = false
-                    }
-                })
+      axios.post("/editExt", this.newExt).then((response) => {
+        if (response.status == 200) {
+          this.employees.forEach((emp) => {
+            if (emp._id == this.newExt._id) {
+              emp.EXT = this.newExt.ext;
+              this.$forceUpdate();
+              this.newExt = {};
+              this.dialog = false;
             }
-        });
+          });
+        }
+      });
     },
     getEmpCount(dep) {
       return this.employees.filter((item) => item.DEPARTMENT_CODE == dep.ID)
