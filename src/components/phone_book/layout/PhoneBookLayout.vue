@@ -66,7 +66,7 @@
                                 v-for="(item, index) in items"
                                 :key="index"
                                 :to="{
-                                    name: 'phone-emp',
+                                    name: 'emp',
                                     params: { id: item._id },
                                 }"
                             >
@@ -87,7 +87,9 @@
                                         item._source.FIRST_NAME +
                                         " " +
                                         item._source.PATRONYMIC
-                                    }}</v-list-item-title>
+                                    }}
+                                    {{ item.STATUS == 4 ? ' - Уволен' : '' }}
+                                    </v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                         </v-list>

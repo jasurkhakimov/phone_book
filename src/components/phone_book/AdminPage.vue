@@ -213,10 +213,7 @@ export default {
             })
             .then((response) => {
               this.employees = response.data;
-              console.log(this.employees);
             });
-
-          console.log(this.data);
         })
         .finally(() => {
           this.scrollToTop();

@@ -6,14 +6,9 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: {name: 'birthday'},
+    redirect: {name: 'deps'},
     component: () => import('../components/phone_book/layout/PhoneBookLayout.vue'),
     children: [
-      {
-        path: '/birthday',
-        name: 'birthday',
-        component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/BirthdayPage.vue')
-      },
       {
         path: '/deps',
         name: 'deps',
@@ -23,6 +18,11 @@ const routes = [
         path: '/admin',
         name: 'admin',
         component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/AdminPage.vue')
+      },
+      {
+        path: '/emp/:id',
+        name: 'emp',
+        component: () => import(/* webpackChunkName: "about" */ '../components/phone_book/EmpPage.vue')
       },
     ],
   },

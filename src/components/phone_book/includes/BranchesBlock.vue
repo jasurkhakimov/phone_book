@@ -41,7 +41,7 @@
                                 "
                             >
                                 <v-list-item-title>
-                                    {{ ent.NAME }}
+                                     {{ ent.NAME != '.' ? ent.NAME  : 'Руководство'  }}
                                 </v-list-item-title>
                             </v-list-item>
                         </v-list-group>

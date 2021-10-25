@@ -1,7 +1,7 @@
 <template>
     <div class="navbar-user">
         <div class="logo">
-            <router-link :to="{ name: 'birthday' }">
+            <router-link :to="{ name: 'deps' }">
                 <img :src="require('../../../assets/logo_ru.png')" width="200" />
             </router-link>
         </div>

@@ -16,7 +16,7 @@
             <div>
                 <div v-for="(dep, index) in data" :key="index" v-show="getEmpCount(dep)">
                     <div class="phone_main__header">
-                        {{ dep.NAME }} (кол-во сотрудников -
+                        {{ dep.NAME != '.' ? dep.NAME  : 'Руководство'  }} (кол-во сотрудников -
                         <span class="primary--text ml-1">
                             {{
                                 getEmpCount(dep)
@@ -154,7 +154,8 @@ export default {
     },
     methods: {
         getSrc(id){
-            return "http://10.10.12.50/ubsp_test/avatar.php?uid=" + id
+            // return "http://10.10.12.50/ubsp_test/avatar.php?uid=" + id
+            return `http://10.10.12.50/ubsp_test/index.php?module=Phones&file=index_phone&prefix=phones_profile&act=img&uids=${id}&rand=204`
         },
         getEmpCount(dep) {
             return this.employees.filter((item) => item.DEPARTMENT_CODE == dep.ID)
@@ -183,10 +184,7 @@ export default {
                         })
                         .then((response) => {
                             this.employees = response.data;
-                            console.log(this.employees);
                         });
-
-                    console.log(this.data);
                 })
                 .finally(() => {
                     this.scrollToTop();
@@ -283,7 +281,7 @@ export default {
         justify-content: center;
         align-items: center;
         & .item_img {
-            height: 44px;
+            width: 44px;
             transition: 0.2s;
 
             &:hover {

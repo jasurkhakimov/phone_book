@@ -11,8 +11,8 @@ Vue.config.productionTip = false
 
 // axios.defaults.baseURL = 'http://10.10.12.67:5000';
 
-// axios.defaults.baseURL = 'http://localhost:5001';
-axios.defaults.baseURL = 'http://10.20.0.7:5001';
+axios.defaults.baseURL = 'http://localhost:5001';
+// axios.defaults.baseURL = 'http://10.20.0.7:5001';
 
 // axios.interceptors.request.use(
 //   config => {
