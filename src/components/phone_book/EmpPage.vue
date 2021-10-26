@@ -3,7 +3,7 @@
         <div>
             <div class="cs_card" v-if="Object.keys(emp).length">
                 <v-row class="ma-0">
-                    <v-col class="cs_card__item" cols="2">
+                    <v-col class="cs_card__item" cols="1">
                         <img
                             :src="getSrc(emp.PIC)"
                             alt=""
@@ -123,6 +123,7 @@ export default {
                     },
                 })
                 .then((response) => {
+                    
                     if (response.data.length === 1) {
                         this.emp = response.data[0];
                     }
@@ -168,8 +169,8 @@ export default {
         }
 
         & .item_img {
-            // height: 115px;
             width: 100%;
+            // height: 115px;
         }
 
         & .item_phone {
