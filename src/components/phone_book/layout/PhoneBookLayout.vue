@@ -2,38 +2,6 @@
     <div class="wrapper_user">
         <NavbarPhone>
             <template v-slot:search>
-                <!-- <v-autocomplete
-                    v-model="model"
-                    :items="items"
-                    :loading="isLoading"
-                    :search-input.sync="search"
-                    hide-no-data
-                    hide-selected
-                    hide-details
-                    item-text=""
-                    item-value="FIRST_NAME"
-                    placeholder="Поиск"
-                    return-object
-                    outlined
-                    dense
-                >
-                    <template v-slot:item="{ item }">
-                        <v-list-item-avatar
-                            color="indigo"
-                            class="headline font-weight-light white--text"
-                        >
-                            {{ item._source.FAMILY.charAt(0) }}
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                {{ item._source.FIRST_NAME }}
-                            </v-list-item-title>
-                        </v-list-item-content>
-                    </template>
-                </v-autocomplete>
-                <v-btn @click="search">
-                    search
-                </v-btn> -->
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
@@ -97,6 +65,7 @@
                 </v-menu>
             </template>
         </NavbarPhone>
+        
         <div class="main_user_container p-24">
             <transition name="fade" mode="out-in">
                 <router-view></router-view>
